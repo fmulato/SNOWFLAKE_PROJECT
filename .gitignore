@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.env/
+.venv/
+snowflake_v1/
+
+# Secrets
+secrets/
+*.json
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
