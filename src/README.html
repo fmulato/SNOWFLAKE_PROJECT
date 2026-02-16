@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>End-to-End Data Pipeline</title>
+<style>
+    body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        margin: 20px;
+        background-color: #f9f9f9;
+        color: #333;
+    }
+    h1, h2, h3 {
+        color: #2c3e50;
+    }
+    h1 {
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 10px;
+    }
+    pre {
+        background-color: #ecf0f1;
+        padding: 15px;
+        overflow-x: auto;
+        border-radius: 5px;
+    }
+    code {
+        font-family: monospace;
+        background-color: #ecf0f1;
+        padding: 2px 5px;
+        border-radius: 3px;
+    }
+    img {
+        max-width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin: 15px 0;
+    }
+    .flow-diagram {
+        font-family: monospace;
+        white-space: pre;
+        background-color: #ecf0f1;
+        padding: 15px;
+        border-radius: 5px;
+    }
+    a {
+        color: #2980b9;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+</head>
+<body>
+
+<h1>📊 End-to-End Data Pipeline: Kaggle → Snowflake → Power BI</h1>
+
+<h2>1. Overview</h2>
+<p>This project demonstrates a <strong>complete data pipeline</strong>:</p>
+<ul>
+    <li>Extraction of datasets from <strong>Kaggle</strong> using local Python (VS Code) to csv files</li>
+    <li>Storage in <strong>Snowflake</strong> from csv to Tabela raw</li>
+    <li>Transformation into a <strong>Star Schema</strong> in <strong>Power Query</strong></li>
+    <li>Dashboard in <strong>Power BI</strong> consuming the Star Schema</li>
+</ul>
+<p>The focus is on <strong>practical data engineering</strong>, dimensional modelling, and BI best practices.</p>
+
+<h2>2. Pipeline Architecture</h2>
+<pre class="flow-diagram">
+Kaggle Dataset
+      ↓
+Python (VS Code - Local)
+      ↓
+Snowflake (Raw / Repository Schema / Flat Table)
+      ↓
+Power Query → Flat Table to Star Schema (Fact + Dimensions)
+      ↓
+Power BI Dashboard
+</pre>
+
+<h2>3. Project Stages</h2>
+
+<h3>3.1 Data Extraction</h3>
+<ul>
+    <li>Public dataset from Kaggle</li>
+    <li>Downloaded via API</li>
+    <li>Initial cleaning and processing using <code>pandas</code></li>
+</ul>
+<p><strong>Technologies:</strong> Python, pandas, Kaggle API</p>
+
+<h3>3.2 Loading into Snowflake</h3>
+<ul>
+    <li>Single flat table in schema <code>ANALYTICS_REPO</code></li>
+    <li>Consistent data types</li>
+    <li>Prepared for modelling in Power Query</li>
+</ul>
+
+<h3>3.3 Transformation in Power Query</h3>
+<ul>
+    <li>Entity separation → Dimensions and Fact Table</li>
+    <li>Creation of dimensions:
+        <ul>
+            <li><code>Dim_Date</code></li>
+            <li><code>Dim_Customer</code></li>
+            <li><code>Dim_Product</code></li>
+            <li><code>Dim_AgeGroup</code></li>
+        </ul>
+    </li>
+    <li>Creation of the <strong>Fact Table</strong> with metrics:
+        <ul>
+            <li>Revenue</li>
+            <li>Quantity</li>
+            <li>Average Ticket</li>
+        </ul>
+    </li>
+</ul>
+<p><em>Note:</em> The Star Schema is generated <strong>within Power Query</strong> after loading into Snowflake.</p>
+
+<h2>4. Dimensional Model (Star Schema)</h2>
+<pre class="flow-diagram">
+              Dim_Date
+                 |
+Dim_Customer — Fact_Sales — Dim_Product
+                 |
+          Dim_AgeGroup
+</pre>
+
+<h2>5. Pipeline Illustrations</h2>
+
+<img src="./images/flow2.png" alt="Whiteboard Star Schema via Power Query" width="700">
+
+<h2>6. Next Steps</h2>
+<ul>
+    <li>Automation with Airflow or dbt</li>
+    <li>SQL transformations in Snowflake</li>
+    <li>Pipeline version control and CI/CD</li>
+    <li>Advanced dashboard with dynamic KPIs</li>
+</ul>
+
+</body>
+</html>

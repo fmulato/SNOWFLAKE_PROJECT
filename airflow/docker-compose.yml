@@ -1,0 +1,38 @@
+services:
+  airflow-webserver:
+    image: apache/airflow:2.7.2
+    restart: unless-stopped
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__CORE__FERNET_KEY: "IaxOTICfS1zu5EQJPmD0yeJzWOl8d1-Ab04YsFl_XsM="
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__WEBSERVER__WORKERS: 2
+      PYTHONPATH: /opt/airflow/src
+    volumes:
+      - ./secrets:/opt/airflow/secrets
+      - ./logs:/opt/airflow/logs
+      - ./airflow.db:/opt/airflow/airflow.db
+      - ./dags:/opt/airflow/dags
+      - ./src:/opt/airflow/src
+      
+    ports:
+      - "8080:8080"
+    command: webserver
+
+  airflow-scheduler:
+    image: apache/airflow:2.7.2
+    restart: unless-stopped
+    depends_on:
+      - airflow-webserver
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__CORE__FERNET_KEY: "YIaxOTICfS1zu5EQJPmD0yeJzWOl8d1-Ab04YsFl_XsM="
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      PYTHONPATH: /opt/airflow/src
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./src:/opt/airflow/src
+      - ./secrets:/opt/airflow/secrets
+      - ./logs:/opt/airflow/logs
+      - ./airflow.db:/opt/airflow/airflow.db
+    command: scheduler
