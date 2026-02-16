@@ -20,3 +20,11 @@ secrets/
 # OS
 .DS_Store
 Thumbs.db
+
+# Logs
+*.log
+airflow/logs/
+
+# Temporary files
+*.tmp
+*.bak
